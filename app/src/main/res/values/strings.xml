@@ -79,4 +79,5 @@
     <string name="add_toggle_tile">Add VoLTE config toggle tile</string>
     <string name="sim_config">SIM Config</string>
     <string name="config_dump_viewer">Config Dump Viewer</string>
+    <string name="use_root_locale">Use Root Locale</string>
 </resources>

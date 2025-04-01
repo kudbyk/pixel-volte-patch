@@ -80,4 +80,5 @@
     <string name="add_toggle_tile">Add VoLTE config toggle tile</string>
     <string name="sim_config">SIM 配置</string>
     <string name="config_dump_viewer">配置转储查看器</string>
+    <string name="use_root_locale">使用根目錄</string>
 </resources>

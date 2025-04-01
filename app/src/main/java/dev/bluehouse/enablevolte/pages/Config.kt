@@ -56,6 +56,7 @@ fun Config(navController: NavController, subId: Int) {
     var crossSIMEnabled by rememberSaveable { mutableStateOf(false) }
     var voWiFiEnabled by rememberSaveable { mutableStateOf(false) }
     var voWiFiEnabledWhileRoaming by rememberSaveable { mutableStateOf(false) }
+    var wfcSpnUseRootLocale by rememberSaveable { mutableStateOf(false) }
     var showIMSinSIMInfo by rememberSaveable { mutableStateOf(false) }
     var allowAddingAPNs by rememberSaveable { mutableStateOf(false) }
     var showVoWifiMode by rememberSaveable { mutableStateOf(false) }
@@ -91,6 +92,7 @@ fun Config(navController: NavController, subId: Int) {
         crossSIMEnabled = moder.isCrossSIMConfigEnabled
         voWiFiEnabled = moder.isVoWifiConfigEnabled
         voWiFiEnabledWhileRoaming = moder.isVoWifiWhileRoamingEnabled
+        wfcSpnUseRootLocale = moder.wfcSpnUseRootLocale
         showIMSinSIMInfo = VERSION.SDK_INT >= VERSION_CODES.R && moder.showIMSinSIMInfo
         allowAddingAPNs = moder.allowAddingAPNs
         showVoWifiMode = VERSION.SDK_INT >= VERSION_CODES.R && moder.showVoWifiMode
@@ -277,6 +279,15 @@ fun Config(navController: NavController, subId: Int) {
                 } else {
                     moder.updateCarrierConfig(CarrierConfigManager.KEY_EDITABLE_WFC_ROAMING_MODE_BOOL, true)
                     moder.restartIMSRegistration()
+                    true
+                }
+            }
+            BooleanPropertyView(label = stringResource(R.string.use_root_locale), toggled = wfcSpnUseRootLocale) {
+                wfcSpnUseRootLocale = if (wfcSpnUseRootLocale) {
+                    moder.updateCarrierConfig(CarrierConfigManager.KEY_WFC_SPN_USE_ROOT_LOCALE, false)
+                    false
+                } else {
+                    moder.updateCarrierConfig(CarrierConfigManager.KEY_WFC_SPN_USE_ROOT_LOCALE, true)
                     true
                 }
             }
