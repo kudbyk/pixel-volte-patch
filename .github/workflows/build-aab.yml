@@ -18,7 +18,7 @@ jobs:
     outputs:
       filename: ${{ steps.build_aab.outputs.upload_filename }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/cache@v3
         with:
           path: |
@@ -64,7 +64,7 @@ jobs:
           KEY_ALIAS: ${{ secrets.key-alias }}
           KEY_PASSWORD: ${{ secrets.key-password }}
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.build_aab.outputs.upload_filename }}
           path: dev.bluehouse.enablevolte.aab
