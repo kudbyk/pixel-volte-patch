@@ -61,11 +61,26 @@ fun DumpedConfig(
                         val split = it.name.split("_")
                         val value = it.get(it) as String
                         when (split.last()) {
-                            "BOOL", "BOOLEAN" -> "${it.name}: ${moder.getBooleanValue(value)}"
-                            "STRING" -> "${it.name}: ${moder.getStringValue(value)}"
-                            "STRINGS" -> "${it.name}: ${moder.getStringArrayValue(value).joinToString(",")}"
-                            "INT" -> "${it.name}: ${moder.getIntValue(value)}"
-                            "LONG" -> "${it.name}: ${moder.getLongValue(value)}"
+                            "BOOL", "BOOLEAN" -> {
+                                "${it.name}: ${moder.getBooleanValue(value)}"
+                            }
+
+                            "STRING" -> {
+                                "${it.name}: ${moder.getStringValue(value)}"
+                            }
+
+                            "STRINGS" -> {
+                                "${it.name}: ${moder.getStringArrayValue(value).joinToString(",")}"
+                            }
+
+                            "INT" -> {
+                                "${it.name}: ${moder.getIntValue(value)}"
+                            }
+
+                            "LONG" -> {
+                                "${it.name}: ${moder.getLongValue(value)}"
+                            }
+
                             "ARRAY" -> {
                                 when (split[split.size - 2]) {
                                     "INT" -> "${it.name}: [${moder.getIntArrayValue(value).joinToString(",")}]"
@@ -74,6 +89,7 @@ fun DumpedConfig(
                                     else -> "${it.name}: Unknown (${split[split.size - 2]}Array)"
                                 }
                             }
+
                             else -> {
                                 val anyVal = moder.getValue(value)
                                 if (anyVal != null) {

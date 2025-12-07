@@ -18,7 +18,7 @@ jobs:
         run: |
           ktlint --reporter=checkstyle,output=build/ktlint-report.xml
         continue-on-error: true
-      - uses: yutailang0119/action-ktlint@v3
+      - uses: yutailang0119/action-ktlint@v4
         with:
           report-path: build/*.xml # Support glob patterns by https://www.npmjs.com/package/@actions/glob
         continue-on-error: false # If annotations contain error of severity, action-ktlint exit 1.
@@ -57,7 +57,7 @@ jobs:
         with:
           name: ${{ needs.build-app-bundle.outputs.filename }}
       - name: Release to GitHub
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: "v${{ github.ref_name }}"
           generate_release_notes: true

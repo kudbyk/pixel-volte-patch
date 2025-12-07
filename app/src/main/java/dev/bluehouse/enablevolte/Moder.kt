@@ -407,6 +407,9 @@ class SubscriptionModer(
         @RequiresApi(VERSION_CODES.R)
         get() = this.getBooleanValue(CarrierConfigManager.KEY_EDITABLE_WFC_ROAMING_MODE_BOOL)
 
+    val wfcSpnUseRootLocale: Boolean
+        get() = this.getBooleanValue(CarrierConfigManager.KEY_WFC_SPN_USE_ROOT_LOCALE)
+
     val wfcSpnFormatIndex: Int
         get() = this.getIntValue(CarrierConfigManager.KEY_WFC_SPN_FORMAT_IDX_INT)
 

@@ -198,7 +198,7 @@ fun EditPropertyDialog(
                     Box(modifier = Modifier.weight(0.05F))
                     Box(modifier = Modifier.weight(1.0F, fill = true)) {
                         when (selectedValueType) {
-                            ValueType.Bool ->
+                            ValueType.Bool -> {
                                 Row(
                                     modifier = Modifier.selectableGroup(),
                                     verticalAlignment = Alignment.CenterVertically,
@@ -214,14 +214,23 @@ fun EditPropertyDialog(
                                     )
                                     Text(stringResource(R.string.false_))
                                 }
-                            ValueType.Int, ValueType.Long ->
+                            }
+
+                            ValueType.Int, ValueType.Long -> {
                                 TextField(
                                     value = value,
                                     onValueChange = { onValueChange(it) },
                                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                                 )
-                            is ValueType -> TextField(value = value, onValueChange = { onValueChange(it) })
-                            else -> Box(modifier = Modifier.fillMaxWidth())
+                            }
+
+                            is ValueType -> {
+                                TextField(value = value, onValueChange = { onValueChange(it) })
+                            }
+
+                            else -> {
+                                Box(modifier = Modifier.fillMaxWidth())
+                            }
                         }
                     }
                 }

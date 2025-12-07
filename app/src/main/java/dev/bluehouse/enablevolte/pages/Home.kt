@@ -69,6 +69,7 @@ fun Home(navController: NavController) {
                     shizukuEnabled = true
                     loadFlags()
                 }
+
                 ShizukuStatus.NOT_GRANTED -> {
                     shizukuEnabled = true
                     Shizuku.addRequestPermissionResultListener { _, grantResult ->
@@ -77,6 +78,7 @@ fun Home(navController: NavController) {
                         }
                     }
                 }
+
                 else -> {
                     shizukuEnabled = false
                 }

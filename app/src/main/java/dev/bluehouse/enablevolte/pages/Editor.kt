@@ -69,11 +69,26 @@ import java.lang.reflect.Field
 fun getValueTypeFromFieldName(key: String): ValueType {
     val split = key.split("_")
     return when (split.last()) {
-        "BOOL", "BOOLEAN" -> ValueType.Bool
-        "STRING" -> ValueType.String
-        "STRINGS" -> ValueType.StringArray
-        "INT" -> ValueType.Int
-        "LONG" -> ValueType.Long
+        "BOOL", "BOOLEAN" -> {
+            ValueType.Bool
+        }
+
+        "STRING" -> {
+            ValueType.String
+        }
+
+        "STRINGS" -> {
+            ValueType.StringArray
+        }
+
+        "INT" -> {
+            ValueType.Int
+        }
+
+        "LONG" -> {
+            ValueType.Long
+        }
+
         "ARRAY" -> {
             when (split[split.size - 2]) {
                 "INT" -> ValueType.IntArray
@@ -83,7 +98,10 @@ fun getValueTypeFromFieldName(key: String): ValueType {
                 else -> ValueType.Unknown
             }
         }
-        else -> ValueType.Unknown
+
+        else -> {
+            ValueType.Unknown
+        }
     }
 }
 
@@ -166,7 +184,7 @@ fun SingleValueEditor(
     onValueChange: (String) -> Unit,
 ) {
     when (val typedValue = data.typedValue) {
-        is Boolean ->
+        is Boolean -> {
             Row(
                 modifier = Modifier.selectableGroup().fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -182,27 +200,35 @@ fun SingleValueEditor(
                 )
                 Text(stringResource(R.string.false_))
             }
-        is Int ->
+        }
+
+        is Int -> {
             TextField(
                 value = data.value ?: "",
                 onValueChange = { onValueChange(it) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
             )
-        is Long ->
+        }
+
+        is Long -> {
             TextField(
                 value = data.value ?: "",
                 onValueChange = { onValueChange(it) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
             )
-        is String, null ->
+        }
+
+        is String, null -> {
             TextField(
                 value = data.value ?: "",
                 onValueChange = { onValueChange(it) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 modifier = Modifier.fillMaxWidth(),
             )
+        }
+
         else -> {}
     }
 }
@@ -278,34 +304,53 @@ fun fieldToDataRow(
     try {
         val value = field.get(field) as String
         return when (getValueTypeFromFieldName(field.name)) {
-            ValueType.Int -> DataRow(field, moder.getIntValue(value))
-            ValueType.String -> DataRow(field, moder.getStringValue(value))
-            ValueType.Bool ->
+            ValueType.Int -> {
+                DataRow(field, moder.getIntValue(value))
+            }
+
+            ValueType.String -> {
+                DataRow(field, moder.getStringValue(value))
+            }
+
+            ValueType.Bool -> {
                 DataRow(
                     field,
                     moder.getBooleanValue(value),
                 )
-            ValueType.Long -> DataRow(field, moder.getLongValue(value))
-            ValueType.IntArray ->
+            }
+
+            ValueType.Long -> {
+                DataRow(field, moder.getLongValue(value))
+            }
+
+            ValueType.IntArray -> {
                 ListDataRow(
                     field,
                     moder.getIntArrayValue(value).toList(),
                 )
-            ValueType.BoolArray ->
+            }
+
+            ValueType.BoolArray -> {
                 ListDataRow(
                     field,
                     moder.getBooleanArrayValue(value).toList(),
                 )
-            ValueType.StringArray ->
+            }
+
+            ValueType.StringArray -> {
                 ListDataRow(
                     field,
                     moder.getStringArrayValue(value).toList(),
                 )
-            ValueType.LongArray ->
+            }
+
+            ValueType.LongArray -> {
                 ListDataRow(
                     field,
                     moder.getIntArrayValue(value).toList(),
                 )
+            }
+
             ValueType.Unknown -> {
                 val anyVal = moder.getValue(value)
                 if (anyVal != null) {
@@ -483,19 +528,44 @@ fun Editor(subId: Int) {
         when (data) {
             is DataRow -> {
                 when (data.fieldType) {
-                    ValueType.Int -> moder.updateCarrierConfig(data.key, data.typedValue as Int)
-                    ValueType.Long -> moder.updateCarrierConfig(data.key, data.typedValue as Long)
-                    ValueType.Bool -> moder.updateCarrierConfig(data.key, data.typedValue as Boolean)
-                    ValueType.String -> moder.updateCarrierConfig(data.key, data.typedValue as String)
+                    ValueType.Int -> {
+                        moder.updateCarrierConfig(data.key, data.typedValue as Int)
+                    }
+
+                    ValueType.Long -> {
+                        moder.updateCarrierConfig(data.key, data.typedValue as Long)
+                    }
+
+                    ValueType.Bool -> {
+                        moder.updateCarrierConfig(data.key, data.typedValue as Boolean)
+                    }
+
+                    ValueType.String -> {
+                        moder.updateCarrierConfig(data.key, data.typedValue as String)
+                    }
+
                     else -> {}
                 }
             }
+
             is ListDataRow -> {
                 when (data.fieldType) {
-                    ValueType.Int -> moder.updateCarrierConfig(data.key, (data.typedValue as List<Int>).toIntArray())
-                    ValueType.Long -> moder.updateCarrierConfig(data.key, (data.typedValue as List<Long>).toLongArray())
-                    ValueType.Bool -> moder.updateCarrierConfig(data.key, (data.typedValue as List<Boolean>).toBooleanArray())
-                    ValueType.String -> moder.updateCarrierConfig(data.key, (data.typedValue as List<String>).toTypedArray())
+                    ValueType.Int -> {
+                        moder.updateCarrierConfig(data.key, (data.typedValue as List<Int>).toIntArray())
+                    }
+
+                    ValueType.Long -> {
+                        moder.updateCarrierConfig(data.key, (data.typedValue as List<Long>).toLongArray())
+                    }
+
+                    ValueType.Bool -> {
+                        moder.updateCarrierConfig(data.key, (data.typedValue as List<Boolean>).toBooleanArray())
+                    }
+
+                    ValueType.String -> {
+                        moder.updateCarrierConfig(data.key, (data.typedValue as List<String>).toTypedArray())
+                    }
+
                     else -> {}
                 }
             }
@@ -532,12 +602,19 @@ fun Editor(subId: Int) {
                     }
                     Row(modifier = Modifier.padding(8.dp).fillMaxWidth()) {
                         when (data) {
-                            is DataRow -> SingleValueEditor(data) { dataToEdit = data.copy(rawValue = it) }
-                            is ListDataRow ->
+                            is DataRow -> {
+                                SingleValueEditor(data) { dataToEdit = data.copy(rawValue = it) }
+                            }
+
+                            is ListDataRow -> {
                                 MultiValueEditor(data) {
                                     dataToEdit = data.copy(rawValue = it)
                                 }
-                            else -> Box(modifier = Modifier.fillMaxWidth())
+                            }
+
+                            else -> {
+                                Box(modifier = Modifier.fillMaxWidth())
+                            }
                         }
                     }
                     Row(modifier = Modifier.align(Alignment.End).padding(top = 16.dp)) {

@@ -138,6 +138,7 @@ fun PixelIMSApp() {
                     subscriptions = carrierModer.subscriptions
                     navBuilder = generateNavBuilder()
                 }
+
                 ShizukuStatus.NOT_GRANTED -> {
                     Shizuku.addRequestPermissionResultListener { _, grantResult ->
                         if (grantResult == PackageManager.PERMISSION_GRANTED) {
@@ -147,6 +148,7 @@ fun PixelIMSApp() {
                         }
                     }
                 }
+
                 else -> {
                     subscriptions = listOf()
                     navBuilder = generateInitialNavBuilder()

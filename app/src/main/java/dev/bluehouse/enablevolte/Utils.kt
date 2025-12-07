@@ -50,6 +50,7 @@ fun getLatestAppVersion(handler: (String) -> Unit) {
                 is Result.Failure -> {
                     handler("0.0.0")
                 }
+
                 is Result.Success -> {
                     try {
                         handler(
