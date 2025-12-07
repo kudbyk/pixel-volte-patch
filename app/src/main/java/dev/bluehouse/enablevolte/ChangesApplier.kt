@@ -7,12 +7,17 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.edit
 import kotlinx.serialization.json.Json
 
-class ChangesApplier(private val context: Context) {
-
+class ChangesApplier(
+    private val context: Context,
+) {
     private val prefs by lazy { context.getSharedPreferences("changes", Context.MODE_PRIVATE) }
 
     @RequiresApi(Build.VERSION_CODES.P)
-    fun recordChange(subId: Int, key: String, value: Any?) {
+    fun recordChange(
+        subId: Int,
+        key: String,
+        value: Any?,
+    ) {
         val moder = SubscriptionModer(context, subId)
         val original = moder.getOriginalCarrierConfig(key)
 
@@ -22,9 +27,18 @@ class ChangesApplier(private val context: Context) {
             changes.bundle.remove(key)
         } else {
             when (value) {
-                is Boolean -> changes.bundle.putBoolean(key, value)
-                is Int -> changes.bundle.putInt(key, value)
-                is String -> changes.bundle.putString(key, value)
+                is Boolean -> {
+                    changes.bundle.putBoolean(key, value)
+                }
+
+                is Int -> {
+                    changes.bundle.putInt(key, value)
+                }
+
+                is String -> {
+                    changes.bundle.putString(key, value)
+                }
+
                 else -> {}
             }
         }
@@ -41,7 +55,10 @@ class ChangesApplier(private val context: Context) {
         }
     }
 
-    private fun saveChanges(subId: Int, changes: Changes) {
+    private fun saveChanges(
+        subId: Int,
+        changes: Changes,
+    ) {
         if (changes.bundle.isEmpty) {
             prefs.edit { remove(subId.toString()) }
         } else {

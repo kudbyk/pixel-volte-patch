@@ -23,13 +23,16 @@ import kotlinx.serialization.json.jsonPrimitive
 @Serializable
 data class Changes(
     @Serializable(with = PersistableBundleSerializer::class)
-    val bundle: PersistableBundle
+    val bundle: PersistableBundle,
 )
 
 object PersistableBundleSerializer : KSerializer<PersistableBundle> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("PersistableBundle")
 
-    override fun serialize(encoder: Encoder, value: PersistableBundle) {
+    override fun serialize(
+        encoder: Encoder,
+        value: PersistableBundle,
+    ) {
         val json = encodeBundle(value)
         encoder.encodeSerializableValue(JsonObject.serializer(), json)
     }
@@ -42,18 +45,19 @@ object PersistableBundleSerializer : KSerializer<PersistableBundle> {
     private fun encodeBundle(bundle: BaseBundle): JsonObject {
         val map = mutableMapOf<String, JsonElement>()
         for (key in bundle.keySet()) {
-            map[key] = when (val value = bundle.get(key)) {
-                is Boolean -> JsonPrimitive(value)
-                is Int -> JsonPrimitive(value)
-                is Double -> JsonPrimitive(value)
-                is String -> JsonPrimitive(value)
-                is BooleanArray -> JsonArray(value.map { JsonPrimitive(it) })
-                is IntArray -> JsonArray(value.map { JsonPrimitive(it) })
-                is DoubleArray -> JsonArray(value.map { JsonPrimitive(it) })
-                is Array<*> -> JsonArray(value.map { if (it is String) JsonPrimitive(it) else JsonNull })
-                is BaseBundle -> encodeBundle(value)
-                else -> JsonNull
-            }
+            map[key] =
+                when (val value = bundle.get(key)) {
+                    is Boolean -> JsonPrimitive(value)
+                    is Int -> JsonPrimitive(value)
+                    is Double -> JsonPrimitive(value)
+                    is String -> JsonPrimitive(value)
+                    is BooleanArray -> JsonArray(value.map { JsonPrimitive(it) })
+                    is IntArray -> JsonArray(value.map { JsonPrimitive(it) })
+                    is DoubleArray -> JsonArray(value.map { JsonPrimitive(it) })
+                    is Array<*> -> JsonArray(value.map { if (it is String) JsonPrimitive(it) else JsonNull })
+                    is BaseBundle -> encodeBundle(value)
+                    else -> JsonNull
+                }
         }
         return JsonObject(map)
     }
@@ -73,6 +77,7 @@ object PersistableBundleSerializer : KSerializer<PersistableBundle> {
                         bundle.putDouble(key, element.jsonPrimitive.doubleOrNull!!)
                     }
                 }
+
                 is JsonArray -> {
                     val first = element.jsonArray.firstOrNull()?.jsonPrimitive
                     if (first != null) {
@@ -87,7 +92,11 @@ object PersistableBundleSerializer : KSerializer<PersistableBundle> {
                         }
                     }
                 }
-                is JsonObject -> bundle.putPersistableBundle(key, decodeBundle(element))
+
+                is JsonObject -> {
+                    bundle.putPersistableBundle(key, decodeBundle(element))
+                }
+
                 else -> {}
             }
         }
